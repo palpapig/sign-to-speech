@@ -56,12 +56,13 @@ class MyHomePage extends StatelessWidget {
                   itemCount: bleController.scanResults.length,
                   itemBuilder: (context, index) {
                     final result = bleController.scanResults[index];
-                    final name = result.device.name.isNotEmpty
-                        ? result.device.name
+                    final name = result.device.platformName.isNotEmpty
+                        ? result.device.platformName
                         : "未知设备";
+
                     return ListTile(
                       title: Text(name),
-                      subtitle: Text(result.device.id.id),
+                      subtitle: Text(result.device.remoteId.str),
                     );
                   },
                 ),

@@ -1,9 +1,10 @@
-// main.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'ble_controller.dart';
 import 'pages/home_page.dart';
 
 void main() {
+  Get.put(BleController()); // ✅ 注册一次全局可用
   runApp(const MyApp());
 }
 
@@ -12,8 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: const HomePage(), // ← 确保这里用的是 HomePage()
-    );
+    return GetMaterialApp(title: 'BLE Demo', home: const HomePage());
   }
 }

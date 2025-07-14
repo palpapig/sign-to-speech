@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/get.dart';
-import '../ble_controller.dart';
+import '../controllers/ble_controller.dart';
 
 class DeviceTile extends StatelessWidget {
   final ScanResult result;

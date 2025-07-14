@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../ble_controller.dart';
+import '../controllers/ble_controller.dart';
 import 'ble_chat_page.dart';
 
 class HomePage extends StatelessWidget {

@@ -37,6 +37,7 @@ dependencies:
   flutter_blue_plus: ^1.31.15
   get:
   permission_handler:
+  flutter_tts:
 
 dev_dependencies:
   flutter_test:

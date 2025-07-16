@@ -23,6 +23,15 @@ class BleChatPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("连接中：${device.platformName}"),
         actions: [
+          // ✅ 新增一个测试语音按钮
+          IconButton(
+            icon: const Icon(Icons.volume_up),
+            tooltip: "测试语音朗读",
+            onPressed: () {
+              ttsHelper.speak("测试语音朗读，您好，这是一个测试。");
+            },
+          ),
+          const SizedBox(width: 8),
           Obx(
             () => Row(
               children: [
@@ -43,25 +52,28 @@ class BleChatPage extends StatelessWidget {
               return ListView.builder(
                 itemCount: bleController.receivedMessages.length,
                 itemBuilder: (context, index) {
-                  final raw = bleController.receivedMessages[index];
+                  final rawChunk = bleController.receivedMessages[index];
 
-                  // 转换：传感器数据（假设是以逗号分隔的小数）
-                  List<double> sensorData = raw
-                      .split(',')
-                      .map((e) => double.tryParse(e.trim()) ?? 0.0)
-                      .toList();
+                  // ✅ 交给 GestureService 拼帧 + 解析
+                  final result = gestureService.processRawChunk(rawChunk);
 
-                  final result = gestureService.process(sensorData);
+                  if (result != null) {
+                    // ✅ 完整帧解析成功，语音朗读
+                    if (appController.ttsEnabled.value) {
+                      ttsHelper.speak(result.text);
+                    }
 
-                  // 如果开启朗读，就说出来
-                  if (appController.ttsEnabled.value) {
-                    ttsHelper.speak(result.text);
+                    return ListTile(
+                      title: Text("✅ 完整帧: $rawChunk"),
+                      subtitle: Text("识别: ${result.text}"),
+                    );
+                  } else {
+                    // ✅ 还在拼接中，先显示碎片
+                    return ListTile(
+                      title: Text("碎片: $rawChunk"),
+                      subtitle: const Text("等待完整帧..."),
+                    );
                   }
-
-                  return ListTile(
-                    title: Text("原始: $raw"),
-                    subtitle: Text("识别: ${result.text}"),
-                  );
                 },
               );
             }),
